@@ -8,6 +8,7 @@ namespace LineKeyViewer;
 
 public static class KeyInputManager {
     public static readonly int[] Location = [0, 1, 2, 3, 4, 5, 6, 7, 12, 13, 9, 8, 10, 11, 14, 15];
+    public static bool Reset;
     [DllImport("user32.dll")]
     public static extern short GetAsyncKeyState(int vKey);
 
@@ -22,20 +23,31 @@ public static class KeyInputManager {
             List<int> rightPressed = [];
             int mainCount = 0;
             while(main.Enabled) {
+                if(Reset) {
+                    foreach(Key key in Main.Keys) key.enable = 0;
+                    keyState = new bool[16];
+                    leftPressed.Clear();
+                    rightPressed.Clear();
+                    Main.LeftHand.sprite = BundleManager.Instance.UnpressedKeySprites[0];
+                    Main.RightHand.sprite = BundleManager.Instance.UnpressedKeySprites[1];
+                    mainCount = 0;
+                    Reset = false;
+                }
                 KeyCode[] keyCodes = setting.KeyCodes;
                 for(int i = 0; i < keyCodes.Length; i++) {
                     bool current = CheckKey(keyCodes[Location[i]]);
                     if(current == keyState[i]) continue;
-                    bool left = i is >= 12 or >= 4 and < 8;
-                    Key key = Main.Keys[i];
+                    int num = setting.FlipHorizontal ? (i < 8 ? 7 : 23) - i : i;
+                    bool left = num is >= 12 or >= 4 and < 8;
+                    Key key = Main.Keys[num];
                     keyState[i] = current;
                     key.enable = (sbyte) (current ? 1 : 0);
                     List<int> pressed = left ? leftPressed : rightPressed;
                     if(current) {
-                        pressed.Add(i);
-                        (left ? Main.LeftHand : Main.RightHand).sprite = BundleManager.Instance.PressedKeySprites[i];
+                        pressed.Add(num);
+                        (left ? Main.LeftHand : Main.RightHand).sprite = BundleManager.Instance.PressedKeySprites[num];
                     } else {
-                        pressed.Remove(i);
+                        pressed.Remove(num);
                         (left ? Main.LeftHand : Main.RightHand).sprite = 
                             pressed.Count == 0 ? BundleManager.Instance.UnpressedKeySprites[left ? 0 : 1] : BundleManager.Instance.PressedKeySprites[pressed[^1]];
                     }

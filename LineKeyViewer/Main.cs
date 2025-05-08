@@ -231,6 +231,7 @@ public class Main() : JAMod(typeof(Setting)) {
         image.sprite = bundleManager.LineHead;
         image.enabled = false;
         
+        if(setting.FlipHorizontal) SizeTransform.eulerAngles = new Vector3(0, 180, 0);
         Object.DontDestroyOnLoad(KeyViewerObject);
         
         threads = new Thread[2];
@@ -253,6 +254,11 @@ public class Main() : JAMod(typeof(Setting)) {
         });
         settingGUI.AddSettingSliderFloat(ref setting.LocationX, 0, ref LocationXString, localization["locationX"], 0, 1, UpdateLocation);
         settingGUI.AddSettingSliderFloat(ref setting.LocationY, 0, ref LocationYString, localization["locationY"], 0, 1, UpdateLocation);
+        settingGUI.AddSettingToggle(ref setting.FlipHorizontal, localization["flipHorizontal"], () => {
+            SizeTransform.eulerAngles = new Vector3(0, setting.FlipHorizontal ? 180 : 0, 0);
+            KeyInputManager.Reset = true;
+            UpdateLocation();
+        });
         settingGUI.AddSettingToggle(ref setting.HideDesk, localization["hideDesk"], () => {
             if(HeadOn) {
                 if(setting.HideDesk) MainImage.enable = 0;
@@ -330,7 +336,7 @@ public class Main() : JAMod(typeof(Setting)) {
         RectTransform rectTransform = LocationTransform;
         rectTransform.sizeDelta = new Vector2(540 * setting.Size, 420 * setting.Size);
         rectTransform.pivot = new Vector2(setting.LocationX, y);
-        rectTransform.anchoredPosition = new Vector2(Setting.LocationX * 1920, y * 1080);
+        rectTransform.anchoredPosition = new Vector2(setting.LocationX * 1920 + (setting.FlipHorizontal ? 540 : 0), y * 1080);
     }
 
     private void Winking() {
