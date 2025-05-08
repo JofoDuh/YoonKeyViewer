@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Reflection;
+using JALib.Core;
+using JALib.Core.Setting;
 using JALib.Tools;
 using JipperResourcePack.Keyviewer;
 using UnityEngine;
@@ -6,25 +9,34 @@ using UnityEngine;
 namespace LineKeyViewer;
 
 public class JipperResourcePackAPI {
-    private static bool Initialized;
+    private static JipperResourcePackAPI Instance;
+    private JAMod Mod;
+    private JASetting Setting;
+    private Action UpdateKeyLimitAction;
 
-    public static bool CheckJipperResourcePack() {
-        if(Initialized) return true;
+    private JipperResourcePackAPI(JAMod mod) {
+        Mod = mod;
+        Type keyViewerType = mod.GetType().Assembly.GetType("JipperResourcePack.Keyviewer.KeyViewer");
+        Setting = keyViewerType.GetValue<JASetting>("Settings");
+        UpdateKeyLimitAction = (Action) keyViewerType.Method("UpdateKeyLimit").CreateDelegate(typeof(Action));
+    }
+
+    public static JipperResourcePackAPI GetAPI() {
+        if(Instance != null) return Instance;
         try {
-            Check();
-            Initialized = true;
-            if(Main.Setting.ShareJipperResourcePack) Main.Setting.ShareJipperKeyCode(true);
+            JAMod mod = JAMod.GetMods("JipperResourcePack");
+            if(mod != null) Instance = new JipperResourcePackAPI(mod);
         } catch (Exception) {
             // ignored
         }
-        return Initialized;
+        return Instance;
     }
 
-    private static bool Check() => JipperResourcePack.Main.Instance.Enabled;
+    public static bool CheckJipperResourcePack() => GetAPI() != null;
 
-    public static KeyCode[] GetKey16() => KeyViewer.Settings.key16;
+    public static KeyCode[] GetKey16() => Instance?.Setting?.GetValue<KeyCode[]>("key16");
 
-    public static void UpdateKeyLimit() => typeof(KeyViewer).Invoke("UpdateKeyLimit");
+    public static void UpdateKeyLimit() => Instance?.UpdateKeyLimitAction();
 
-    public static void SaveSetting() => JipperResourcePack.Main.Instance.SaveSetting();
+    public static void SaveSetting() => Instance?.Mod.SaveSetting();
 }
