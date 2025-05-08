@@ -325,6 +325,7 @@ public class Main() : JAMod(typeof(Setting)) {
                 WinkOn = false;
                 MainImage.sprite = Setting.HideDesk ? BundleManager.Instance.Line : BundleManager.Instance.LineTable;
             }
+        } catch (ThreadAbortException) {
         } catch (Exception e) {
             if(!Enabled) return;
             LogReportException("Failed to work wink", e);
