@@ -22,6 +22,7 @@ public class Main() : JAMod(typeof(Setting)) {
     public static Key[] Keys;
     public static bool HeadOn;
     public static bool WinkOn;
+    public static bool GameResult;
     private static string SizeString;
     private static string LocationXString;
     private static string LocationYString;
@@ -34,6 +35,7 @@ public class Main() : JAMod(typeof(Setting)) {
         Setting = (Setting) base.Setting;
         SettingGUI = new SettingGUI(this);
         SelectedKey = -1;
+        Patcher.AddPatch(typeof(ResultHandler));
     }
 
     protected override void OnEnable() {
@@ -344,7 +346,7 @@ public class Main() : JAMod(typeof(Setting)) {
             while(Enabled) {
                 do {
                     Thread.Sleep(JARandom.Instance.Next(3000, 7000));
-                } while(HeadOn);
+                } while(HeadOn || GameResult);
                 WinkOn = true;
                 MainImage.sprite = Setting.HideDesk ? BundleManager.Instance.LineWink : BundleManager.Instance.LineWinkTable;
                 Thread.Sleep(JARandom.Instance.Next(100, 250));

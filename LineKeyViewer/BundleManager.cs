@@ -9,6 +9,7 @@ public class BundleManager {
     public readonly AssetBundle Bundle;
     public Sprite[] KeySprites;
     public Sprite[] PressedKeySprites;
+    public Sprite[] UnpressedKeySprites;
     public Sprite Line;
     public Sprite LineHead;
     public Sprite LineTable;
@@ -16,8 +17,9 @@ public class BundleManager {
     public Sprite LineWinkTable;
     public Sprite Piano;
     public Sprite Table;
-    public Sprite[] UnpressedKeySprites;
-    
+    public Sprite LineClear;
+    public Sprite LineClearTable;
+    public Sprite LineDie;
 
     public BundleManager() {
         Bundle = AssetBundle.LoadFromFile(Path.Combine(Main.Instance.Path, "linekeyviewer"));
@@ -55,6 +57,15 @@ public class BundleManager {
                     break;
                 case "unpressed_right":
                     UnpressedKeySprites[1] = sprite;
+                    break;
+                case "clear":
+                    LineClear = sprite;
+                    break;
+                case "clear_table":
+                    LineClearTable = sprite;
+                    break;
+                case "die":
+                    LineDie = sprite;
                     break;
             }
         }

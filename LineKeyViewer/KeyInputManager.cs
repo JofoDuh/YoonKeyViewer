@@ -54,6 +54,7 @@ public static class KeyInputManager {
                     if(i >= 8) continue;
                     if(current) mainCount++;
                     else mainCount--;
+                    if(Main.GameResult) continue;
                     if(mainCount < 8) {
                         if(!Main.HeadOn) continue;
                         Main.Head.enable = 0;
