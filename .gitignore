@@ -1,0 +1,10 @@
+# Intellij Idea
+.idea
+*.sln.DotSettings.user
+
+# Compile File
+bin/
+obj/
+
+# Library
+packages/
