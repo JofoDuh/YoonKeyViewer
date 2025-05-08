@@ -9,6 +9,8 @@ namespace LineKeyViewer;
 
 public class Setting : JASetting {
     public float Size = 1;
+    public float LocationX = 0;
+    public float LocationY = 1;
     public bool HideDesk;
     public bool ShareJipperResourcePack = true;
     [DataExclude] public bool KeyCodeJipperResourcePack;

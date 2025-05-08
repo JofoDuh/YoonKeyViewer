@@ -14,6 +14,7 @@ public class Main() : JAMod(typeof(Setting)) {
     public static new Setting Setting;
     public static GameObject KeyViewerObject;
     public static RectTransform SizeTransform;
+    public static RectTransform LocationTransform;
     public static AsyncImage MainImage;
     public static AsyncImage LeftHand;
     public static AsyncImage RightHand;
@@ -22,6 +23,8 @@ public class Main() : JAMod(typeof(Setting)) {
     public static bool HeadOn;
     public static bool WinkOn;
     private static string SizeString;
+    private static string LocationXString;
+    private static string LocationYString;
     private static int SelectedKey;
     private static int WinAPICool;
     private static bool[] KeyPressed;
@@ -47,9 +50,15 @@ public class Main() : JAMod(typeof(Setting)) {
         scaler.matchWidthOrHeight = 0.5f;
         canvas.gameObject.AddComponent<GraphicRaycaster>();
         
-        GameObject gameObj = new("SizeObject");
-        RectTransform rectTransform = SizeTransform = gameObj.AddComponent<RectTransform>();
+        GameObject gameObj = new("LocationObject");
+        RectTransform rectTransform = LocationTransform = gameObj.AddComponent<RectTransform>();
         rectTransform.SetParent(KeyViewerObject.transform);
+        rectTransform.anchorMin = rectTransform.anchorMax = Vector2.zero;
+        UpdateLocation();
+        
+        gameObj = new GameObject("SizeObject");
+        rectTransform = SizeTransform = gameObj.AddComponent<RectTransform>();
+        rectTransform.SetParent(LocationTransform);
         rectTransform.sizeDelta = new Vector2(540, 420);
         rectTransform.localScale = new Vector3(Setting.Size, Setting.Size);
         rectTransform.anchorMin = rectTransform.anchorMax = rectTransform.offsetMin = rectTransform.offsetMax = Vector2.zero;
@@ -240,7 +249,10 @@ public class Main() : JAMod(typeof(Setting)) {
         JALocalization localization = Localization;
         settingGUI.AddSettingSliderFloat(ref setting.Size, 1, ref SizeString, localization["size"], 0, 2, () => {
             SizeTransform.localScale = new Vector3(setting.Size, setting.Size);
+            UpdateLocation();
         });
+        settingGUI.AddSettingSliderFloat(ref setting.LocationX, 0, ref LocationXString, localization["locationX"], 0, 1, UpdateLocation);
+        settingGUI.AddSettingSliderFloat(ref setting.LocationY, 0, ref LocationYString, localization["locationY"], 0, 1, UpdateLocation);
         settingGUI.AddSettingToggle(ref setting.HideDesk, localization["hideDesk"], () => {
             if(HeadOn) {
                 if(setting.HideDesk) MainImage.enable = 0;
@@ -311,6 +323,15 @@ public class Main() : JAMod(typeof(Setting)) {
     private static string Bold(string text, bool bold) => !bold ? text : $"<b>{text}</b>";
 
     private static string KeyToString(KeyCode keyCode) => (int) keyCode < 0x1000 ? keyCode.ToString() : ((System.Windows.Forms.Keys) (keyCode - 0x1000)).ToString();
+    
+    private static void UpdateLocation() {
+        Setting setting = Setting;
+        float y = 1 - setting.LocationY;
+        RectTransform rectTransform = LocationTransform;
+        rectTransform.sizeDelta = new Vector2(540 * setting.Size, 420 * setting.Size);
+        rectTransform.pivot = new Vector2(setting.LocationX, y);
+        rectTransform.anchoredPosition = new Vector2(Setting.LocationX * 1920, y * 1080);
+    }
 
     private void Winking() {
         try {
