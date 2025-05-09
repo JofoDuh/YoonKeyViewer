@@ -144,7 +144,7 @@ public class Main() : JAMod(typeof(Setting)) {
         RectTransform rectTransform = KeyViewer.locationTransform;
         rectTransform.sizeDelta = new Vector2(540 * setting.Size, 420 * setting.Size);
         rectTransform.pivot = new Vector2(setting.LocationX, y);
-        rectTransform.anchoredPosition = new Vector2(setting.LocationX * 1920 + (setting.FlipHorizontal ? 540 : 0), y * 1080);
+        rectTransform.anchoredPosition = new Vector2(setting.LocationX * 1920, y * 1080);
     }
 
     private void Winking() {
