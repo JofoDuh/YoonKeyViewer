@@ -505,15 +505,19 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="AsyncImage.cs" />
         <Compile Include="BundleManager.cs" />
         <Compile Include="JipperResourcePackAPI.cs" />
-        <Compile Include="Key.cs" />
         <Compile Include="KeyInputManager.cs" />
         <Compile Include="Main.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="ResultHandler.cs" />
         <Compile Include="Setting.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\LineKeyViewer.Component\LineKeyViewer.Component.csproj">
+        <Project>{3362baac-55a1-4f1a-b5d7-70833b7e9021}</Project>
+        <Name>LineKeyViewer.Component</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

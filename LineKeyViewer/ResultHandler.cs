@@ -1,5 +1,6 @@
 ﻿using System;
 using JALib.Core.Patch;
+using LineKeyViewer.Component;
 using MonsterLove.StateMachine;
 
 namespace LineKeyViewer;
@@ -23,33 +24,35 @@ public static class ResultHandler {
     }
 
     public static void Die() {
-        if(Main.GameResult) return;
-        Main.GameResult = true;
-        bool head = Main.HeadOn;
-        Main.HeadOn = false;
-        Main.WinkOn = false;
-        Main.Head.sprite = Main.Head.image.sprite = BundleManager.Instance.LineDie;
+        scrLineKeyViewer keyViewer = Main.KeyViewer;
+        if(keyViewer.gameResult) return;
+        keyViewer.gameResult = true;
+        bool head = keyViewer.headOn;
+        keyViewer.headOn = false;
+        keyViewer.winkOn = false;
+        keyViewer.head.sprite = keyViewer.head.image.sprite = BundleManager.Instance.LineDie;
         if(head) return;
-        if(Main.Setting.HideDesk) Main.MainImage.enable = 0;
-        else Main.MainImage.sprite = BundleManager.Instance.Table;
-        Main.LeftHand.enable = 0;
-        Main.RightHand.enable = 0;
-        Main.Head.enable = 1;
+        if(Main.Setting.HideDesk) keyViewer.mainImage.enable = 0;
+        else keyViewer.mainImage.sprite = BundleManager.Instance.Table;
+        keyViewer.leftHand.enable = 0;
+        keyViewer.rightHand.enable = 0;
+        keyViewer.head.enable = 1;
     }
 
     public static void Clear() {
-        if(Main.GameResult) return;
-        Main.GameResult = true;
-        bool head = Main.HeadOn;
-        Main.HeadOn = false;
-        Main.WinkOn = false;
-        Main.MainImage.sprite = Main.MainImage.image.sprite = Main.Setting.HideDesk ? BundleManager.Instance.LineClear : BundleManager.Instance.LineClearTable;
+        scrLineKeyViewer keyViewer = Main.KeyViewer;
+        if(keyViewer.gameResult) return;
+        keyViewer.gameResult = true;
+        bool head = keyViewer.headOn;
+        keyViewer.headOn = false;
+        keyViewer.winkOn = false;
+        keyViewer.mainImage.sprite = keyViewer.mainImage.image.sprite = Main.Setting.HideDesk ? BundleManager.Instance.LineClear : BundleManager.Instance.LineClearTable;
         if(head) {
-            Main.MainImage.enable = 1;
-            Main.Head.enable = 0;
+            keyViewer.mainImage.enable = 1;
+            keyViewer.head.enable = 0;
         } else {
-            Main.LeftHand.enable = 0;
-            Main.RightHand.enable = 0;
+            keyViewer.leftHand.enable = 0;
+            keyViewer.rightHand.enable = 0;
         }
     }
     
@@ -57,15 +60,15 @@ public static class ResultHandler {
     [JAPatch(typeof(scnEditor), "ResetScene", PatchType.Postfix, false)]
     [JAPatch(typeof(scrController), "StartLoadingScene", PatchType.Postfix, false)]
     public static void Reset() {
-        Main.GameResult = false;
-        Main.MainImage.sprite = Main.Setting.HideDesk ? BundleManager.Instance.Line : BundleManager.Instance.LineTable;
-        Main.LeftHand.enable = 1;
-        Main.RightHand.enable = 1;
-        if(Main.Head.image.enabled) {
-            Main.Head.enable = 0;
-            Main.Head.image.sprite = BundleManager.Instance.LineHead;
-            if(Main.Setting.HideDesk) Main.MainImage.enable = 1;
+        scrLineKeyViewer keyViewer = Main.KeyViewer;
+        keyViewer.mainImage.sprite = Main.Setting.HideDesk ? BundleManager.Instance.Line : BundleManager.Instance.LineTable;
+        keyViewer.leftHand.enable = 1;
+        keyViewer.rightHand.enable = 1;
+        if(keyViewer.head.image.enabled) {
+            keyViewer.head.enable = 0;
+            keyViewer.head.image.sprite = BundleManager.Instance.LineHead;
+            if(Main.Setting.HideDesk) keyViewer.mainImage.enable = 1;
         }
-        Main.GameResult = false;
+        keyViewer.gameResult = false;
     }
 }

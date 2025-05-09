@@ -7,7 +7,6 @@ namespace LineKeyViewer;
 public class BundleManager {
     public static BundleManager Instance;
     public readonly AssetBundle Bundle;
-    public Sprite[] KeySprites;
     public Sprite[] PressedKeySprites;
     public Sprite[] UnpressedKeySprites;
     public Sprite Line;
@@ -15,20 +14,22 @@ public class BundleManager {
     public Sprite LineTable;
     public Sprite LineWink;
     public Sprite LineWinkTable;
-    public Sprite Piano;
     public Sprite Table;
     public Sprite LineClear;
     public Sprite LineClearTable;
     public Sprite LineDie;
+    public GameObject KeyViewerObject;
 
     public BundleManager() {
         Bundle = AssetBundle.LoadFromFile(Path.Combine(Main.Instance.Path, "linekeyviewer"));
-        KeySprites = new Sprite[16];
         PressedKeySprites = new Sprite[16];
         UnpressedKeySprites = new Sprite[2];
         foreach(Object asset in Bundle.LoadAllAssets()) {
+            if(asset is GameObject gameObject) {
+                KeyViewerObject = gameObject;
+                continue;
+            }
             if(asset is not Sprite sprite) continue;
-            if(asset.name.StartsWith("key")) KeySprites[int.Parse(asset.name[3..]) - 1] = sprite;
             else if(asset.name.StartsWith("pressed_key")) PressedKeySprites[int.Parse(asset.name[11..]) - 1] = sprite;
             else switch(asset.name) {
                 case "Line1":
@@ -45,9 +46,6 @@ public class BundleManager {
                     break;
                 case "Line_table_wink":
                     LineWinkTable = sprite;
-                    break;
-                case "piano":
-                    Piano = sprite;
                     break;
                 case "table":
                     Table = sprite;
