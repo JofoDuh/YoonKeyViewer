@@ -63,6 +63,7 @@ public static class ResultHandler {
         Main.RightHand.enable = 1;
         if(Main.Head.image.enabled) {
             Main.Head.enable = 0;
+            Main.Head.image.sprite = BundleManager.Instance.LineHead;
             if(Main.Setting.HideDesk) Main.MainImage.enable = 1;
         }
         Main.GameResult = false;
