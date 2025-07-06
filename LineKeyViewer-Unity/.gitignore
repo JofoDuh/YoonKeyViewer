@@ -9,7 +9,7 @@ obj/
 # Unity File
 Library/
 Logs/
-Packages/
+!Packages/
 Temp/
 UserSettings/
 Build/
