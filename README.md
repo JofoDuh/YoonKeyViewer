@@ -12,7 +12,7 @@
 * 이미지에 대한 저작권은 [굥욷](https://www.youtube.com/@%EA%B5%A5%EC%9A%B7)님에게 있습니다.
 ---
 ### 개발 환경 Development environment
-* Windows 11
+* Windows 10
 * Visual Studio 2022
 * .NET Framework 4.8.1
 * C# 9
