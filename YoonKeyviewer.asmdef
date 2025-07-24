@@ -1,0 +1,32 @@
+{
+    "name": "YoonKeyviewer",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Assembly-CSharp.dll",
+        "Assembly-CSharp-firstpass.dll",
+        "0Harmony.dll",
+        "DOTween.dll",
+        "DOTweenPro.dll",
+        "RDTools.dll",
+        "Newtonsoft.Json.dll",
+        "UnityModManager.dll",
+        "System.Windows.Forms.dll",
+        "BepInEx.dll",
+        "JipperResourcePack.dll",
+        "JALib.dll",
+        "AdofaiTweaks.dll",
+        "JALib.Bootstrap.dll",
+        "KeyboardChatterBlocker.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

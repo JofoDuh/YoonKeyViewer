@@ -8,3 +8,7 @@ obj/
 
 # Library
 packages/
+Scenes
+Scenes.meta
+YoonKeyViewerManifest.asset
+YoonKeyViewerManifest.asset.meta
